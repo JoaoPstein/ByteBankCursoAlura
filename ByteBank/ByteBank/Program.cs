@@ -1,4 +1,5 @@
 ﻿using ByteBank.Entities;
+using ByteBank.Validations;
 using System;
 
 namespace ByteBank
@@ -9,18 +10,27 @@ namespace ByteBank
         {
             try
             {
-                Account conta = new Account(456, 0);
+                Account account = new Account(456, 456789);
+
+                account.Deposit(100);
+                Console.WriteLine($"Seu saldo é de R${account.Balance}");
+
+                account.Sacar(-500);
             }
             catch (ArgumentException ex)
             {
                 if (ex.ParamName == "numero")
                 {
-
                 }
 
                 Console.WriteLine("Argumento com problema: " + ex.ParamName);
                 Console.WriteLine("Ocorreu uma exceção do tipo ArgumentException");
                 Console.WriteLine(ex.Message);
+            }
+            catch (InsufficientFundsException ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Exceção do tipo saldo insuficiente.");
             }
             catch (Exception ex)
             {

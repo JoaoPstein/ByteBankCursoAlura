@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ByteBank.Validations;
+using System;
 
 namespace ByteBank.Entities
 {
@@ -8,8 +9,8 @@ namespace ByteBank.Entities
         public static int TotalAccount { get; private set; }
         public Client Holder { get; set; }
 
-        public int Number { get; set; }
-        public int Agency { get; set; }
+        public int Number { get; }
+        public int Agency { get; }
 
         private double _balance = 100;
         public double Balance
@@ -43,19 +44,23 @@ namespace ByteBank.Entities
             Agency = agency;
             Number = number;
 
-            OperationFee = 30 / TotalAccount;
-
             TotalAccount++;
+
+            OperationFee = 30 / TotalAccount;
         }
 
-        public bool Sacar(double value)
+        public void Sacar(double value)
         {
+            if (value < 0)
+            {
+                throw new ArgumentException("Valor inválido para o saque.", nameof(value));
+            }
+
             if (_balance < value)
             {
-                return false;
+                throw new InsufficientFundsException(Balance, value);
             }
             _balance -= value;
-            return true;
         }
 
         public void Deposit(double value)
@@ -63,16 +68,15 @@ namespace ByteBank.Entities
             _balance += value;
         }
 
-        public bool Transfer(double value, Account destinationAccount)
+        public void Transfer(double value, Account destinationAccount)
         {
-            if (_balance < value)
+            if (value < 0)
             {
-                return false;
+                throw new ArgumentException("Valor inválido para a tranferência.", nameof(value));
             }
 
-            _balance -= value;
+            Sacar(value);
             destinationAccount.Deposit(value);
-            return true;
         }
     }
 }
