@@ -1,5 +1,5 @@
 ﻿using ByteBank.Entities;
-using ByteBank.Validations;
+using ByteBank.Exceptions;
 using System;
 
 namespace ByteBank
@@ -10,41 +10,71 @@ namespace ByteBank
         {
             try
             {
+                GetAccounts();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("CATCH NO METODO MAIN.");
+            }
+
+            Console.WriteLine("Execução finalizada. Tecle enter para sair");
+            Console.ReadLine();
+        }
+
+        private static void GetAccounts()
+        {
+            using (ReadArchive read = new ReadArchive("Account.txt"))
+            {
+                read.ReadNextRow();
+            }
+
+            #region outra forma
+            //ReadArchive readArchive = null;
+            //try
+            //{
+            //    readArchive = new ReadArchive("account.txt");
+            //    readArchive.ReadNextRow();
+            //    readArchive.ReadNextRow();
+            //    readArchive.ReadNextRow();
+            //}
+            //finally
+            //{
+            //    Console.WriteLine("Executando o finaly...");
+            //    if (readArchive != null)
+            //    {
+            //        readArchive.Dispose();
+            //    }
+            //}
+            #endregion
+        }
+
+        private static void TestInnerException()
+        {
+            try
+            {
                 Account account = new Account(456, 456789);
+                Account accountB = new Account(456, 456789);
+
+                accountB.Transfer(1000, account);
 
                 account.Deposit(100);
                 Console.WriteLine($"Seu saldo é de R${account.Balance}");
 
                 account.Sacar(-500);
             }
-            catch (ArgumentException ex)
-            {
-                if (ex.ParamName == "numero")
-                {
-                }
-
-                Console.WriteLine("Argumento com problema: " + ex.ParamName);
-                Console.WriteLine("Ocorreu uma exceção do tipo ArgumentException");
-                Console.WriteLine(ex.Message);
-            }
-            catch (InsufficientFundsException ex)
+            catch (OperationFinanceException ex)
             {
                 Console.WriteLine(ex.Message);
-                Console.WriteLine("Exceção do tipo saldo insuficiente.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+                Console.WriteLine(ex.StackTrace);
 
-            //Metodo();
+                Console.WriteLine("Informações da INNER EXCEPTION (exceção interna): ");
 
-            Console.WriteLine("Execução finalizada. Tecle enter para sair");
-            Console.ReadLine();
+                Console.WriteLine(ex.InnerException.Message);
+                Console.WriteLine(ex.InnerException.StackTrace);
+            }
         }
 
-        // Teste com a cadeia de chamada:
-        // Metodo -> TestaDivisao -> Dividir
+        #region Método divisão
         private static void Metodo()
         {
             TestaDivisao(0);
@@ -52,8 +82,10 @@ namespace ByteBank
 
         private static void TestaDivisao(int divisor)
         {
-            int resultado = Dividir(10, divisor);
-            Console.WriteLine("Resultado da divisão de 10 por " + divisor + " é " + resultado);
+            int value = 10;
+
+            int resultado = Dividir(value, divisor);
+            Console.WriteLine($"Resultado da divisão de {value} por { divisor}  é {resultado}");
         }
 
         private static int Dividir(int numero, int divisor)
@@ -64,12 +96,12 @@ namespace ByteBank
             }
             catch (DivideByZeroException)
             {
-                Console.WriteLine("Exceção com numero=" + numero + " e divisor=" + divisor);
+                Console.WriteLine($"Exceção com numero = {numero} e divisor = {divisor}");
                 throw;
                 Console.WriteLine("Código depois do throw");
             }
         }
-
+        #endregion
     }
 }
 

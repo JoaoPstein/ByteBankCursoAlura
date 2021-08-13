@@ -1,8 +1,9 @@
-﻿using System;
+﻿using ByteBank.Exceptions;
+using System;
 
 namespace ByteBank.Validations
 {
-    public class InsufficientFundsException : Exception
+    public class InsufficientFundsException : OperationFinanceException
     {
         public double Saldo { get; }
         public double ValorSaque { get; }
@@ -21,5 +22,10 @@ namespace ByteBank.Validations
             Saldo = saldo;
             ValorSaque = valorSaque;
         }
+
+        public InsufficientFundsException(string message, Exception internalException) : base(message, internalException)
+        {
+        }
+
     }
 }

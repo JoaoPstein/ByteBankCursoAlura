@@ -1,4 +1,5 @@
-﻿using ByteBank.Validations;
+﻿using ByteBank.Exceptions;
+using ByteBank.Validations;
 using System;
 
 namespace ByteBank.Entities
@@ -11,6 +12,8 @@ namespace ByteBank.Entities
 
         public int Number { get; }
         public int Agency { get; }
+        public int CounterWithdrawalsNotAllowed { get; private set; }
+        public int CounterTransfersNotAllowed { get; private set; }
 
         private double _balance = 100;
         public double Balance
@@ -58,6 +61,7 @@ namespace ByteBank.Entities
 
             if (_balance < value)
             {
+                CounterWithdrawalsNotAllowed++;
                 throw new InsufficientFundsException(Balance, value);
             }
             _balance -= value;
@@ -74,8 +78,15 @@ namespace ByteBank.Entities
             {
                 throw new ArgumentException("Valor inválido para a tranferência.", nameof(value));
             }
-
-            Sacar(value);
+            try
+            {
+                Sacar(value);
+            }
+            catch (InsufficientFundsException ex)
+            {
+                CounterTransfersNotAllowed++;
+                throw new OperationFinanceException("Operação não realizada.", ex);
+            }
             destinationAccount.Deposit(value);
         }
     }
