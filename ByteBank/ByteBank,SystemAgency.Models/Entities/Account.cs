@@ -94,5 +94,17 @@ namespace ByteBank.Entities
         {
             return $"Número: {Number}, Agência: {Agency}, Saldo: {Balance}";
         }
+
+        public override bool Equals(object obj)
+        {
+            Account outherAccount = obj as Account;
+
+            if (outherAccount == null)
+            {
+                return false;
+            }
+
+            return Number == outherAccount.Number && Agency == outherAccount.Agency;
+        }
     }
 }

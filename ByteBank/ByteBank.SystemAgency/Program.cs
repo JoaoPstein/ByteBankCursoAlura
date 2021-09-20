@@ -9,6 +9,34 @@ namespace ByteBank.SystemAgency
     {
         static void Main(string[] args)
         {
+           
+        }
+
+        static void TesteIndexadoresAndParams()
+        {
+            ListAccount list = new ListAccount();
+
+            Account contaDoIrineu = new Account(891, 1234567);
+            list.Add(contaDoIrineu);
+
+            Account[] accounts = new Account[]
+            {
+                contaDoIrineu,
+                new Account(231, 456879),
+                new Account(678, 890567),
+            };
+
+            list.AddSeveral(accounts);
+
+
+            for (int i = 0; i < list.Size; i++)
+            {
+                Account currentItem = list[i];
+
+                Console.WriteLine($"Item na posição {i} conta {currentItem.Number}");
+            }
+
+            Console.ReadLine();
         }
 
         static void TestIndexOfAndSubstring()
