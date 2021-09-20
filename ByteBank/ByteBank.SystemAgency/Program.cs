@@ -9,43 +9,90 @@ namespace ByteBank.SystemAgency
     {
         static void Main(string[] args)
         {
-            #region Object
+            GenericList<int> ages = new GenericList<int>();
 
-            Console.WriteLine("Irineuuuu");
-            Console.WriteLine(345);
-            Console.WriteLine(23.5);
-            Console.WriteLine(true);
+            ages.AddSeveral(1, 12, 23, 34, 45, 56);
 
-            object account = new Account(456, 678989);
-            string accountToString = account.ToString();
-            Console.WriteLine("Resultado: " + accountToString);
-
-            Client clientA = new Client();
-            clientA.Name = "Irineu";
-            clientA.CPF = "345.567.123-00";
-            clientA.Profession = "Desempregado";
-
-            Client clientB = new Client();
-            clientB.Name = "Irineu";
-            clientB.CPF = "345.567.123-00";
-            clientB.Profession = "Desempregado";
-
-            object accountB = new Account(456, 678989);
-
-            if (clientA.Equals(accountB))
+            for (int i = 0; i < ages.Size; i++)
             {
-                Console.WriteLine("São iguais!");
-            }
-            else
-            {
-                Console.WriteLine("Não são iguais!");
+                int currentAge = ages[i];
+                Console.WriteLine(currentAge);
             }
 
             Console.ReadLine();
-            #endregion
+        }
 
-            #region Manipulação de string
+        static void TestListObject()
+        {
+            ListObject listAges = new ListObject();
 
+            listAges.Add(10);
+            listAges.Add(45);
+            listAges.Add(23);
+            listAges.AddSeveral(45, 43, 65, 87);
+
+            for (int i = 0; i < listAges.Size; i++)
+            {
+                int age = (int)listAges[i];
+                Console.WriteLine($"Idade no indice {i}: {age}");
+            }
+        }
+
+        static void TestIndexadoresAndParams()
+        {
+            ListAccount list = new ListAccount();
+
+            Account contaDoIrineu = new Account(891, 1234567);
+            list.Add(contaDoIrineu);
+
+            Account[] accounts = new Account[]
+            {
+                contaDoIrineu,
+                new Account(231, 456879),
+                new Account(678, 890567),
+            };
+
+            list.AddSeveral(accounts);
+
+            for (int i = 0; i < list.Size; i++)
+            {
+                Account currentItem = list[i];
+
+                Console.WriteLine($"Item na posição {i} conta {currentItem.Number}");
+            }
+
+            Console.ReadLine();
+        }
+
+        static void TestIndexOfAndSubstring()
+        {
+            string url = "pagina?moedaOrigem=real&moedaDestino=dolar";
+
+            int indiceInterrogacao = url.IndexOf('?');
+
+            Console.WriteLine(indiceInterrogacao);
+
+            Console.WriteLine(url);
+            string argumentos = url.Substring(indiceInterrogacao + 1);
+            Console.WriteLine(argumentos);
+
+            Console.ReadLine();
+        }
+
+        static void TestIsNullOrEmpty()
+        {
+            string textoVazio = "";
+            string textoNulo = null;
+            string textoQualquer = "kjhfsdjhgsdfjksdf";
+
+            Console.WriteLine(String.IsNullOrEmpty(textoVazio));
+            Console.WriteLine(String.IsNullOrEmpty(textoNulo));
+            Console.WriteLine(String.IsNullOrEmpty(textoQualquer));
+            Console.ReadLine();
+        }
+
+        static void TestManipulationString()
+        {
             //Expressão regular, quantificadores
             string padrao = "[0-9]{4,5}-?{0,1}[0-9]{4}";
 
@@ -95,33 +142,86 @@ namespace ByteBank.SystemAgency
             Console.WriteLine(testeRemocao.Remove(indiceEComercial, 4));
             Console.ReadLine();
 
-            #endregion
+        }
 
-            #region Testando IsNullOrEmpty
-            string textoVazio = "";
-            string textoNulo = null;
-            string textoQualquer = "kjhfsdjhgsdfjksdf";
+        static void TestObject()
+        {
+            Console.WriteLine("Irineuuuu");
+            Console.WriteLine(345);
+            Console.WriteLine(23.5);
+            Console.WriteLine(true);
 
-            Console.WriteLine(String.IsNullOrEmpty(textoVazio));
-            Console.WriteLine(String.IsNullOrEmpty(textoNulo));
-            Console.WriteLine(String.IsNullOrEmpty(textoQualquer));
+            object account = new Account(456, 678989);
+            string accountToString = account.ToString();
+            Console.WriteLine("Resultado: " + accountToString);
+
+            Client clientA = new Client();
+            clientA.Name = "Irineu";
+            clientA.CPF = "345.567.123-00";
+            clientA.Profession = "Desempregado";
+
+            Client clientB = new Client();
+            clientB.Name = "Irineu";
+            clientB.CPF = "345.567.123-00";
+            clientB.Profession = "Desempregado";
+
+            object accountB = new Account(456, 678989);
+
+            if (clientA.Equals(accountB))
+            {
+                Console.WriteLine("São iguais!");
+            }
+            else
+            {
+                Console.WriteLine("Não são iguais!");
+            }
+
+            Console.ReadLine();
+        }
+
+        static void TestArray()
+        {
+            #region Array Class
+
+            Account[] accounts = new Account[]
+            {
+                new Account(123, 45601),
+                new Account(789, 10102),
+                new Account(112, 12103)
+            };
+
+            for (int i = 0; i < accounts.Length; i++)
+            {
+                Console.WriteLine($"Indice: {i} Conta: {accounts[i].Number}");
+            }
+
             Console.ReadLine();
             #endregion
 
-            #region IndexOf e Substring
-            string url = "pagina?moedaOrigem=real&moedaDestino=dolar";
+            #region Array int
 
-            int indiceInterrogacao = url.IndexOf('?');
+            int[] ages = new int[5];
 
-            Console.WriteLine(indiceInterrogacao);
+            ages[0] = 1;
+            ages[1] = 2;
+            ages[2] = 3;
+            ages[3] = 4;
+            ages[4] = 5;
 
-            Console.WriteLine(url);
-            string argumentos = url.Substring(indiceInterrogacao + 1);
-            Console.WriteLine(argumentos);
+            int acumulator = 0;
+            for (int i = 0; i < ages.Length; i++)
+            {
+                int age = ages[i];
 
+                Console.WriteLine($"Indice: {i} Idade: {age}");
+
+                acumulator += age;
+            }
+
+            int media = acumulator / ages.Length;
+            Console.WriteLine($"Média: {media}");
             Console.ReadLine();
-
-            #endregion
+            #endregion 
         }
     }
 }
