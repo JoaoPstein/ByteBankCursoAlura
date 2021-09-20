@@ -9,10 +9,36 @@ namespace ByteBank.SystemAgency
     {
         static void Main(string[] args)
         {
-           
+            GenericList<int> ages = new GenericList<int>();
+
+            ages.AddSeveral(1, 12, 23, 34, 45, 56);
+
+            for (int i = 0; i < ages.Size; i++)
+            {
+                int currentAge = ages[i];
+                Console.WriteLine(currentAge);
+            }
+
+            Console.ReadLine();
         }
 
-        static void TesteIndexadoresAndParams()
+        static void TestListObject()
+        {
+            ListObject listAges = new ListObject();
+
+            listAges.Add(10);
+            listAges.Add(45);
+            listAges.Add(23);
+            listAges.AddSeveral(45, 43, 65, 87);
+
+            for (int i = 0; i < listAges.Size; i++)
+            {
+                int age = (int)listAges[i];
+                Console.WriteLine($"Idade no indice {i}: {age}");
+            }
+        }
+
+        static void TestIndexadoresAndParams()
         {
             ListAccount list = new ListAccount();
 
@@ -27,7 +53,6 @@ namespace ByteBank.SystemAgency
             };
 
             list.AddSeveral(accounts);
-
 
             for (int i = 0; i < list.Size; i++)
             {
