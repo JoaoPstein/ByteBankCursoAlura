@@ -4,7 +4,7 @@ using System;
 
 namespace ByteBank.Entities
 {
-    public class Account
+    public class Account : IComparable
     {
         private static int OperationFee;
         public static int TotalAccount { get; private set; }
@@ -105,6 +105,32 @@ namespace ByteBank.Entities
             }
 
             return Number == outherAccount.Number && Agency == outherAccount.Agency;
+        }
+
+        public int CompareTo(object obj)
+        {
+            // Retornar negativo quando a instância precede o obj
+            // Retornar zero quando nossa instância e obj forem equivalentes 
+            // Retornar positivo diferente de zero quando a precedencia for de obj
+
+            var account = obj as Account;
+
+            if (account == null)
+            {
+                return -1;
+            }
+
+            if (Number < account.Number)
+            {
+                return -1;
+            }
+
+            if (Number == account.Number)
+            {
+                return 0;
+            }
+
+            return 1;
         }
     }
 }
