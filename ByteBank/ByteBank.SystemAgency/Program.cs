@@ -1,6 +1,9 @@
 ﻿using ByteBank.Entities;
-using ByteBank_SystemAgency.Models.Emploees;
+using ByteBank.SystemAgency.Comparators;
+using ByteBank.SystemAgency.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace ByteBank.SystemAgency
@@ -9,15 +12,75 @@ namespace ByteBank.SystemAgency
     {
         static void Main(string[] args)
         {
-            GenericList<int> ages = new GenericList<int>();
+            Console.ReadLine();
+        }
 
-            ages.AddSeveral(1, 12, 23, 34, 45, 56);
+        static void TestList()
+        {
+            #region LIST<STRING>
+            var names = new List<string>()
+            {
+                "Teste A",
+                "Teste X",
+                "Teste R",
+                "Teste B",
+                "Teste F",
+            };
 
-            for (int i = 0; i < ages.Size; i++)
+            names.Sort();
+
+            foreach (var item in names)
+            {
+                Console.WriteLine(item);
+            }
+            #endregion
+
+            #region LIST<INT>
+            var ages = new List<int>();
+
+            ages.Add(1);
+            ages.Add(12);
+            ages.Add(23);
+            ages.Add(36);
+            ages.Add(41);
+
+            ages.AddSeveral(34, 67, 23, 7);
+
+            ages.Sort();
+
+            for (int i = 0; i < ages.Count; i++)
             {
                 int currentAge = ages[i];
                 Console.WriteLine(currentAge);
             }
+
+            #endregion
+
+            #region LIST<CLASS> LINQ IENUMERABLE
+            var accounts = new List<Account>()
+            {
+                new Account(8, 5),
+                new Account(6, 2),
+                null,
+                new Account(9, 4),
+                new Account(7, 3),
+                null,
+                new Account(10, 1)
+            };
+
+            var accountsOrder = accounts
+                .Where(x => x != null)
+                .OrderBy(conta => conta.Number);
+
+            foreach (var account in accountsOrder)
+            {
+                if (account != null)
+                {
+                    Console.WriteLine($"Numero: {account.Number} - Agencia: {account.Agency}");
+                }
+            }
+
+            #endregion
 
             Console.ReadLine();
         }

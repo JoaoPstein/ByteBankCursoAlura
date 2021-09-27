@@ -18,8 +18,6 @@ namespace ByteBank.SystemAgency
         {
             VerifyCapacity(_nextPosition + 1);
 
-            Console.WriteLine($"Adicionando item na posição {_nextPosition}");
-
             _items[_nextPosition] = account;
             _nextPosition++;
         }
