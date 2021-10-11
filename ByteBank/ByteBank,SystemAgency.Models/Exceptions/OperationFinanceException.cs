@@ -6,7 +6,7 @@ namespace ByteBank.Exceptions
     {
         public OperationFinanceException()
         {
-                
+
         }
 
         public OperationFinanceException(string message) : base(message)
